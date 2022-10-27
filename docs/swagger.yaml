@@ -1,0 +1,180 @@
+basePath: /
+definitions:
+  models.Item:
+    properties:
+      description:
+        type: string
+      item_code:
+        type: string
+      item_id:
+        type: string
+      order_id:
+        type: string
+      quantity:
+        type: integer
+    type: object
+  models.Order:
+    properties:
+      customer_name:
+        type: string
+      items:
+        items:
+          $ref: '#/definitions/models.Item'
+        type: array
+      order_id:
+        type: string
+      ordered_at:
+        type: string
+    type: object
+  order.RequestCreateOrder:
+    properties:
+      customer_name:
+        example: nathan fernando
+        type: string
+      items:
+        items:
+          $ref: '#/definitions/models.Item'
+        type: array
+    type: object
+  order.RequestUpdateOrder:
+    properties:
+      customer_name:
+        example: nathan fernando
+        type: string
+    type: object
+  order.ResponseCreateOrder:
+    properties:
+      id:
+        type: string
+      message:
+        type: string
+    type: object
+  order.ResponseDeleteOrder:
+    properties:
+      id:
+        type: string
+      message:
+        type: string
+    type: object
+  order.ResponseGetOrder:
+    properties:
+      order:
+        $ref: '#/definitions/models.Order'
+    type: object
+  order.ResponseGetOrders:
+    properties:
+      orders:
+        items:
+          $ref: '#/definitions/models.Order'
+        type: array
+    type: object
+  order.ResponseUpdateOrder:
+    properties:
+      id:
+        type: string
+      message:
+        type: string
+    type: object
+host: localhost:8080
+info:
+  contact:
+    email: nathan@gmail.com
+    name: API Support
+  description: Simple service
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: http://swagger.io/terms/
+  title: Assignment 2 API
+  version: "1.0"
+paths:
+  /order:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: ' '
+        in: body
+        name: payload
+        required: true
+        schema:
+          $ref: '#/definitions/order.RequestCreateOrder'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Success
+          schema:
+            $ref: '#/definitions/order.ResponseCreateOrder'
+      summary: Create new Order
+  /order/{id}:
+    delete:
+      consumes:
+      - application/json
+      parameters:
+      - description: id
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: '#/definitions/order.ResponseDeleteOrder'
+      summary: Delete Order
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: id
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: '#/definitions/order.ResponseGetOrder'
+      summary: Get order by ID
+    put:
+      consumes:
+      - application/json
+      parameters:
+      - description: id
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: ' '
+        in: body
+        name: payload
+        required: true
+        schema:
+          $ref: '#/definitions/order.RequestUpdateOrder'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: '#/definitions/order.ResponseUpdateOrder'
+      summary: Update Order
+  /orders:
+    get:
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: '#/definitions/order.ResponseGetOrders'
+      summary: Get all orders
+swagger: "2.0"
